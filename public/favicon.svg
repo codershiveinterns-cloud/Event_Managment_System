@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <defs>
+    <linearGradient id="gold" x1="12" y1="4" x2="54" y2="62" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#fff8dc"/>
+      <stop offset="0.28" stop-color="#f8d36b"/>
+      <stop offset="0.58" stop-color="#d99621"/>
+      <stop offset="0.86" stop-color="#8f4d12"/>
+      <stop offset="1" stop-color="#ffe9a3"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="23" cy="13" r="46" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#fff4c2" stop-opacity="0.45"/>
+      <stop offset="0.44" stop-color="#f59e0b" stop-opacity="0.16"/>
+      <stop offset="1" stop-color="#09090b" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="64" height="64" rx="18" fill="#09090b"/>
+  <rect width="64" height="64" rx="18" fill="url(#glow)"/>
+  <path d="M32 5 54 17v30L32 59 10 47V17z" fill="#0c0a09" stroke="url(#gold)" stroke-width="3"/>
+  <path d="M32 12 48 21v22L32 52 16 43V21z" fill="rgba(251,191,36,0.08)" stroke="url(#gold)" stroke-width="1.4"/>
+  <g transform="translate(-4.5 0)">
+    <path d="M17 42V22h4.9v8.1L30.3 22h6L27 31.1 37.1 42h-6.2l-7.2-8.5-1.8 1.8V42z" fill="#fff7d6" stroke="#09090b" stroke-width="0.8" paint-order="stroke"/>
+    <path d="M35.2 42V22h5l5.5 8.7 5.5-8.7h5v20h-4.8V30.4l-5.5 8.3h-.3l-5.5-8.2V42z" fill="#fff7d6" stroke="#09090b" stroke-width="0.8" paint-order="stroke"/>
+  </g>
+  <path d="M32 1.5 33.6 6l4.6 1.7-4.6 1.7L32 14l-1.6-4.6-4.6-1.7L30.4 6z" fill="#fff2b8"/>
+</svg>
