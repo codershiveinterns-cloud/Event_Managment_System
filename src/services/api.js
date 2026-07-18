@@ -1,5 +1,10 @@
-export const API_URL = import.meta.env.VITE_API_URL || '/api'
-export const API_ORIGIN = import.meta.env.VITE_API_ORIGIN || ''
+const configuredApiUrl = import.meta.env.VITE_API_URL || ''
+const configuredApiOrigin = import.meta.env.VITE_API_ORIGIN || ''
+const isLocalApiUrl = configuredApiUrl.includes('localhost') || configuredApiUrl.includes('127.0.0.1')
+const isLocalApiOrigin = configuredApiOrigin.includes('localhost') || configuredApiOrigin.includes('127.0.0.1')
+
+export const API_URL = import.meta.env.PROD && isLocalApiUrl ? '/api' : configuredApiUrl || '/api'
+export const API_ORIGIN = import.meta.env.PROD && isLocalApiOrigin ? '' : configuredApiOrigin
 
 export function getAuthToken() {
   return localStorage.getItem('adminToken')
