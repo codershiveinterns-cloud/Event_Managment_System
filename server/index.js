@@ -26,6 +26,8 @@ app.use(async (_req, _res, next) => {
 
 const allowedOrigins = [
   process.env.CLIENT_URL,
+  process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : '',
+  'https://event-managment-system-chi.vercel.app',
   'http://localhost:5173',
   'http://localhost:5174',
   'http://localhost:5175',
@@ -34,10 +36,22 @@ const allowedOrigins = [
   'http://127.0.0.1:5175',
 ].filter(Boolean)
 
+function isAllowedOrigin(origin) {
+  if (!origin) return true
+  if (allowedOrigins.includes(origin)) return true
+
+  try {
+    const { hostname } = new URL(origin)
+    return hostname.endsWith('.vercel.app')
+  } catch (_error) {
+    return false
+  }
+}
+
 app.use(
   cors({
     origin(origin, callback) {
-      if (!origin || allowedOrigins.includes(origin)) {
+      if (isAllowedOrigin(origin)) {
         callback(null, true)
         return
       }
