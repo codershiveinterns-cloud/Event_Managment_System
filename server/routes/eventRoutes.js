@@ -2,6 +2,7 @@ const express = require('express')
 const Event = require('../models/Event')
 const protect = require('../middleware/authMiddleware')
 const upload = require('../middleware/uploadMiddleware')
+const { uploadToBlob } = require('../utils/blobUpload')
 
 const router = express.Router()
 
@@ -63,9 +64,10 @@ function mapAdminEvent(event) {
   }
 }
 
-function buildEventPayload(body, file, existingEvent) {
+async function buildEventPayload(body, file, existingEvent) {
   const packages = parsePackages(body.packages)
   const price = Number(body.price)
+  const imageUrl = file ? await uploadToBlob(file, 'events') : existingEvent?.imageUrl || ''
 
   return {
     name: body.name,
@@ -74,7 +76,7 @@ function buildEventPayload(body, file, existingEvent) {
     description: body.description,
     price,
     packages,
-    imageUrl: file ? `/uploads/events/${file.filename}` : existingEvent?.imageUrl || '',
+    imageUrl,
     featured: parseBoolean(body.featured),
     isActive: parseBoolean(body.isActive, true),
   }
@@ -158,7 +160,7 @@ router.get('/admin/events/:id', protect, async (req, res) => {
 
 router.post('/admin/events', protect, upload.single('image'), async (req, res) => {
   try {
-    const payload = buildEventPayload(req.body, req.file)
+    const payload = await buildEventPayload(req.body, req.file)
     const validationError = validateEventPayload(payload)
     if (validationError) return res.status(400).json({ message: validationError })
 
@@ -174,7 +176,7 @@ router.put('/admin/events/:id', protect, upload.single('image'), async (req, res
     const existingEvent = await Event.findById(req.params.id)
     if (!existingEvent) return res.status(404).json({ message: 'Event not found' })
 
-    const payload = buildEventPayload(req.body, req.file, existingEvent)
+    const payload = await buildEventPayload(req.body, req.file, existingEvent)
     const validationError = validateEventPayload(payload)
     if (validationError) return res.status(400).json({ message: validationError })
 

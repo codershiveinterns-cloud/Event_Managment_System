@@ -1,24 +1,12 @@
-const fs = require('fs')
-const path = require('path')
 const express = require('express')
 const multer = require('multer')
 const Gallery = require('../models/Gallery')
 const protect = require('../middleware/authMiddleware')
+const { uploadToBlob } = require('../utils/blobUpload')
 
 const router = express.Router()
-const uploadDir = path.join(__dirname, '..', 'uploads', 'gallery')
 
-if (!fs.existsSync(uploadDir)) {
-  fs.mkdirSync(uploadDir, { recursive: true })
-}
-
-const storage = multer.diskStorage({
-  destination: (_req, _file, cb) => cb(null, uploadDir),
-  filename: (_req, file, cb) => {
-    const safeName = file.originalname.replace(/[^a-zA-Z0-9.]/g, '-').toLowerCase()
-    cb(null, `${Date.now()}-${safeName}`)
-  },
-})
+const storage = multer.memoryStorage()
 
 const upload = multer({
   storage,
@@ -94,7 +82,7 @@ router.post('/admin/gallery', protect, mediaUpload, async (req, res) => {
     }
 
     const mediaType = getMediaType(file)
-    const mediaUrl = `/uploads/gallery/${file.filename}`
+    const mediaUrl = await uploadToBlob(file, 'gallery')
     const item = await Gallery.create({
       title,
       category,
@@ -125,7 +113,7 @@ router.put('/admin/gallery/:id', protect, mediaUpload, async (req, res) => {
     existing.category = category
     if (file) {
       const mediaType = getMediaType(file)
-      const mediaUrl = `/uploads/gallery/${file.filename}`
+      const mediaUrl = await uploadToBlob(file, 'gallery')
       existing.mediaUrl = mediaUrl
       existing.mediaType = mediaType
       existing.imageUrl = mediaType === 'image' ? mediaUrl : existing.imageUrl

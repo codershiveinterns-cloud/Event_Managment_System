@@ -15,7 +15,14 @@ const galleryRoutes = require('./routes/galleryRoutes')
 const app = express()
 const PORT = process.env.PORT || 5000
 
-connectDB()
+app.use(async (_req, _res, next) => {
+  try {
+    await connectDB()
+    next()
+  } catch (error) {
+    next(error)
+  }
+})
 
 const allowedOrigins = [
   process.env.CLIENT_URL,
@@ -61,6 +68,10 @@ app.use((error, _req, res, _next) => {
   res.status(500).json({ message: error.message || 'Server error' })
 })
 
-app.listen(PORT, () => {
-  console.log(`Server running on http://localhost:${PORT}`)
-})
+if (require.main === module) {
+  app.listen(PORT, () => {
+    console.log(`Server running on http://localhost:${PORT}`)
+  })
+}
+
+module.exports = app

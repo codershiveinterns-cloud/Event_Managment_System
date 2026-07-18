@@ -8,6 +8,7 @@
   },
   "dependencies": {
     "@tailwindcss/vite": "latest",
+    "@vercel/blob": "^2.6.1",
     "@vitejs/plugin-react": "latest",
     "bcryptjs": "latest",
     "concurrently": "latest",
@@ -23,6 +24,5 @@
     "react-router-dom": "latest",
     "tailwindcss": "latest",
     "vite": "latest"
-  },
-  "devDependencies": {}
+  }
 }
