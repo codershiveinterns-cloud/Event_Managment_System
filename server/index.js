@@ -11,6 +11,7 @@ const bookingRoutes = require('./routes/bookingRoutes')
 const staffRoutes = require('./routes/staffRoutes')
 const dashboardRoutes = require('./routes/dashboardRoutes')
 const galleryRoutes = require('./routes/galleryRoutes')
+const uploadRoutes = require('./routes/uploadRoutes')
 
 const app = express()
 const PORT = process.env.PORT || 5000
@@ -76,6 +77,7 @@ app.use('/api', bookingRoutes)
 app.use('/api', staffRoutes)
 app.use('/api', dashboardRoutes)
 app.use('/api', galleryRoutes)
+app.use('/api', uploadRoutes)
 
 app.use((error, _req, res, _next) => {
   console.error(error)

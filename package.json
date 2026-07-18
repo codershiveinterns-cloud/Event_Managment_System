@@ -8,7 +8,6 @@
   },
   "dependencies": {
     "@tailwindcss/vite": "latest",
-    "@vercel/blob": "^2.6.1",
     "@vitejs/plugin-react": "latest",
     "bcryptjs": "latest",
     "concurrently": "latest",

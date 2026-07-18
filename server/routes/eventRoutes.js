@@ -2,7 +2,7 @@ const express = require('express')
 const Event = require('../models/Event')
 const protect = require('../middleware/authMiddleware')
 const upload = require('../middleware/uploadMiddleware')
-const { uploadToBlob } = require('../utils/blobUpload')
+const { uploadToDatabase } = require('../utils/databaseUpload')
 
 const router = express.Router()
 
@@ -67,7 +67,7 @@ function mapAdminEvent(event) {
 async function buildEventPayload(body, file, existingEvent) {
   const packages = parsePackages(body.packages)
   const price = Number(body.price)
-  const imageUrl = file ? await uploadToBlob(file, 'events') : existingEvent?.imageUrl || ''
+  const imageUrl = file ? await uploadToDatabase(file, 'events') : existingEvent?.imageUrl || ''
 
   return {
     name: body.name,
